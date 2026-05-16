@@ -1,0 +1,1067 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --white: #ffffff;
+  --off-white: #f7f6f3;
+  --light-gray: #e8e6e1;
+  --mid-gray: #9e9b94;
+  --dark-gray: #2a2926;
+  --black: #0d0c0b;
+  --radius-lg: 12px;
+  --radius-pill: 999px;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--off-white);
+  color: var(--black);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ==========================================
+   หน้าแรกพิเศษตัวหนังสือยักษ์มินิมอล (Welcome Screen)
+   ========================================== */
+.welcome-screen {
+  display: flex;
+  min-height: 100vh;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--white);
+  cursor: pointer;
+  user-select: none;
+}
+
+.welcome-content {
+  text-align: center;
+}
+
+.main-title-large {
+  font-family: 'DM Serif Display', serif;
+  font-size: 4.5rem;
+  font-weight: 300;
+  line-height: 1.35;
+  color: var(--black);
+  letter-spacing: -0.02em;
+  transition: color 0.4s ease;
+}
+
+.welcome-screen:hover .main-title-large {
+  color: var(--mid-gray);
+}
+
+.start-hint {
+  margin-top: 32px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.85rem;
+  color: var(--mid-gray);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+/* ==========================================
+   สไตล์ดั้งเดิมแกะจากโค้ด HTML เป๊ะๆ 100%
+   ========================================== */
+.cursor-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--black);
+  border-radius: 50%;
+  position: fixed;
+  top: 0; left: 0;
+  pointer-events: none;
+  z-index: 9999;
+  mix-blend-mode: difference;
+}
+
+.cursor-ring {
+  width: 36px;
+  height: 36px;
+  border: 1.5px solid var(--black);
+  border-radius: 50%;
+  position: fixed;
+  top: 0; left: 0;
+  pointer-events: none;
+  z-index: 9998;
+  transition: transform 0.18s ease, width 0.2s, height 0.2s, opacity 0.2s;
+  mix-blend-mode: difference;
+  transform: translate(-14px, -14px);
+}
+
+body:has(a:hover) .cursor-ring,
+body:has(button:hover) .cursor-ring {
+  width: 52px;
+  height: 52px;
+  transform: translate(-22px, -22px);
+  opacity: 0.5;
+}
+
+/* คลาสช่วยเชิกล็อก Scroll เมื่อเปิดโมดอล */
+.has-open-modal {
+  overflow: hidden;
+}
+
+/* แถบนำทางด้านบน nav */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 48px;
+  background: rgba(247, 246, 243, 0.88);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.3s;
+}
+
+nav.scrolled {
+  border-bottom-color: var(--light-gray);
+}
+
+.nav-logo {
+  font-family: 'DM Serif Display', serif;
+  font-size: 20px;
+  letter-spacing: -0.5px;
+  color: var(--black);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nav-logo .dot {
+  width: 8px;
+  height: 8px;
+  background: var(--black);
+  border-radius: 50%;
+  animation: pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 1 }
+  50% { transform: scale(1.5); opacity: 0.4 }
+}
+
+.nav-links {
+  display: flex;
+  gap: 32px;
+  list-style: none;
+}
+
+.nav-links a {
+  font-size: 14px;
+  color: var(--mid-gray);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.nav-links a:hover {
+  color: var(--black);
+}
+
+.nav-cta {
+  font-size: 13px;
+  font-weight: 500;
+  background: var(--black);
+  color: var(--white);
+  border: none;
+  border-radius: var(--radius-pill);
+  padding: 9px 22px;
+  cursor: pointer;
+  transition: transform 0.15s, background 0.2s;
+}
+
+.nav-cta:hover {
+  transform: scale(1.03);
+  background: var(--dark-gray);
+}
+
+/* ส่วนหัวแบนเนอร์หลัก hero */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 120px 48px 80px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-bg-text {
+  position: absolute;
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(140px, 22vw, 320px);
+  color: var(--light-gray);
+  opacity: 0.5;
+  white-space: nowrap;
+  user-select: none;
+  pointer-events: none;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  letter-spacing: -0.04em;
+  z-index: 0;
+}
+
+.hero-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--white);
+  border: 1px solid var(--light-gray);
+  border-radius: var(--radius-pill);
+  padding: 6px 16px 6px 10px;
+  font-size: 12px;
+  color: var(--mid-gray);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 32px;
+  position: relative;
+  z-index: 1;
+  animation: fadeUp 0.6s ease both;
+}
+
+.hero-tag .blink {
+  width: 6px;
+  height: 6px;
+  background: #22c55e;
+  border-radius: 50%;
+  animation: blink 1.5s ease-in-out infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1 }
+  50% { opacity: 0.2 }
+}
+
+.hero-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(52px, 8vw, 96px);
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  position: relative;
+  z-index: 1;
+  animation: fadeUp 0.6s 0.1s ease both;
+}
+
+.hero-title em {
+  font-style: italic;
+  color: var(--mid-gray);
+}
+
+.hero-sub {
+  max-width: 500px;
+  font-size: 17px;
+  font-weight: 300;
+  color: var(--mid-gray);
+  line-height: 1.65;
+  margin: 24px auto 0;
+  position: relative;
+  z-index: 1;
+  animation: fadeUp 0.6s 0.2s ease both;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  margin-top: 48px;
+  position: relative;
+  z-index: 1;
+  animation: fadeUp 0.6s 0.3s ease both;
+}
+
+.btn-primary {
+  background: var(--black);
+  color: var(--white);
+  border: none;
+  border-radius: var(--radius-pill);
+  padding: 14px 32px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: transform 0.15s, box-shadow 0.15s;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(13, 12, 11, 0.18);
+}
+
+.btn-primary .arrow {
+  transition: transform 0.2s;
+}
+
+.btn-primary:hover .arrow {
+  transform: translateX(4px);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--black);
+  border: 1px solid var(--light-gray);
+  border-radius: var(--radius-pill);
+  padding: 14px 32px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.btn-ghost:hover {
+  border-color: var(--black);
+  background: var(--white);
+}
+
+.scroll-hint {
+  position: absolute;
+  bottom: 48px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: var(--mid-gray);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  animation: fadeUp 0.6s 0.8s ease both;
+  z-index: 1;
+}
+
+.scroll-line {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, var(--mid-gray), transparent);
+  animation: scrollDown 2s ease-in-out infinite;
+}
+
+@keyframes scrollDown {
+  0% { transform: scaleY(0); transform-origin: top }
+  50% { transform: scaleY(1); transform-origin: top }
+  50.001% { transform: scaleY(1); transform-origin: bottom }
+  100% { transform: scaleY(0); transform-origin: bottom }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px) }
+  to { opacity: 1; transform: translateY(0) }
+}
+
+/* ตัวอักษรวิ่งด้านหลังมาร์คีย์ marquee */
+.marquee-wrap {
+  overflow: hidden;
+  border-top: 1px solid var(--light-gray);
+  border-bottom: 1px solid var(--light-gray);
+  padding: 18px 0;
+  white-space: nowrap;
+}
+
+.marquee-inner {
+  display: inline-block;
+  animation: marquee 28s linear infinite;
+  font-family: 'DM Serif Display', serif;
+  font-size: 16px;
+}
+
+.marquee-inner span {
+  color: var(--mid-gray);
+  margin: 0 32px;
+}
+
+.marquee-inner b {
+  color: var(--black);
+  font-weight: 400;
+}
+
+@keyframes marquee {
+  from { transform: translateX(0) }
+  to { transform: translateX(-50%) }
+}
+
+/* สไตล์ร่วมสำหรับทุก Section Shared */
+section {
+  padding: 100px 48px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.section-label {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--mid-gray);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.section-label::before {
+  content: '';
+  display: block;
+  width: 32px;
+  height: 1px;
+  background: var(--mid-gray);
+}
+
+.section-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(36px, 5vw, 56px);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  max-width: 640px;
+  margin-bottom: 64px;
+}
+
+.section-title em {
+  font-style: italic;
+  color: var(--mid-gray);
+}
+
+/* ระบบจัดปุ่มการ์ดโหมดหลัก mode cards */
+.modes-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+  background: var(--light-gray);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.mode-card {
+  background: var(--white);
+  padding: 40px 32px;
+  position: relative;
+  overflow: hidden;
+  transition: background 0.25s, opacity 0.5s ease, transform 0.5s ease;
+  cursor: pointer;
+}
+
+/* ใส่ความหน่วงในแอนิเมชันตอนการเลื่อนเปิดเว็บตรวจเจอ */
+.modes-grid .mode-card:nth-child(1) { transition-delay: 0s; }
+.modes-grid .mode-card:nth-child(2) { transition-delay: 0.1s; }
+.modes-grid .mode-card:nth-child(3) { transition-delay: 0.2s; }
+
+.mode-card:hover {
+  background: var(--black);
+}
+
+.mode-card:hover .mode-icon,
+.mode-card:hover .mode-num,
+.mode-card:hover .mode-name,
+.mode-card:hover .mode-desc,
+.mode-card:hover .mode-cta {
+  color: var(--white);
+}
+
+.mode-card:hover .mode-icon {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.mode-card:hover .mode-cta {
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.mode-num {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--mid-gray);
+  margin-bottom: 28px;
+  transition: color 0.25s;
+}
+
+.mode-icon {
+  width: 48px;
+  height: 48px;
+  background: var(--off-white);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  margin-bottom: 24px;
+  transition: background 0.25s;
+}
+
+.mode-name {
+  font-family: 'DM Serif Display', serif;
+  font-size: 22px;
+  margin-bottom: 12px;
+  transition: color 0.25s;
+}
+
+.mode-desc {
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--mid-gray);
+  line-height: 1.6;
+  transition: color 0.25s;
+  margin-bottom: 28px;
+}
+
+.mode-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--black);
+  border: 1px solid var(--light-gray);
+  border-radius: var(--radius-pill);
+  padding: 7px 18px;
+  background: transparent;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  transition: color 0.25s, border-color 0.25s, transform 0.15s;
+}
+
+.mode-cta:hover {
+  transform: translateX(2px);
+}
+
+/* แถบแผงแถบสีดำด่วนเลือกกดอีโมจิ emoji strip */
+.mood-strip {
+  background: var(--black);
+  color: var(--white);
+  padding: 80px 48px;
+  text-align: center;
+}
+
+.mood-strip .label {
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.4);
+  margin-bottom: 32px;
+}
+
+.mood-strip h2 {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(32px, 5vw, 52px);
+  letter-spacing: -0.02em;
+  margin-bottom: 48px;
+  line-height: 1.1;
+}
+
+.emoji-row {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.emoji-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 20px 24px;
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+  position: relative;
+}
+
+.emoji-item:hover {
+  background: rgba(255, 255, 255, 0.06);
+  transform: translateY(-4px);
+}
+
+.emoji-item .em {
+  font-size: 36px;
+  line-height: 1;
+}
+
+.emoji-item .mood-label {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.4);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.emoji-item:hover .mood-label {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.emoji-item::after {
+  content: attr(data-song);
+  position: absolute;
+  bottom: calc(100% + 8px);
+  background: var(--white);
+  color: var(--black);
+  font-size: 12px;
+  padding: 6px 12px;
+  border-radius: var(--radius-pill);
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.2s, transform 0.2s;
+}
+
+.emoji-item:hover::after {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ส่วนล่างสุดของเว็บ Footer */
+footer {
+  border-top: 1px solid var(--light-gray);
+  padding: 40px 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 13px;
+  color: var(--mid-gray);
+}
+
+footer strong {
+  font-family: 'DM Serif Display', serif;
+  color: var(--black);
+  font-size: 16px;
+  font-weight: 400;
+}
+
+/* ==========================================
+   ระบบควบคุมหน้าต่างแสดงผลทับ (Modals Overlay)
+   ========================================== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  background: rgba(13, 12, 11, 0.65);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.modal-overlay.open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.modal-overlay.open .modal-box {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.modal-box {
+  background: var(--white);
+  border-radius: 20px;
+  width: 100%;
+  max-width: 660px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 48px;
+  position: relative;
+  transform: translateY(28px);
+  opacity: 0;
+  transition: transform 0.35s ease, opacity 0.35s ease;
+}
+
+.modal-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--off-white);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  color: var(--mid-gray);
+  transition: background 0.2s, color 0.2s;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.modal-close:hover {
+  background: var(--black);
+  color: var(--white);
+}
+
+.modal-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--off-white);
+  border-radius: var(--radius-pill);
+  padding: 5px 14px;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--mid-gray);
+  margin-bottom: 20px;
+}
+
+.modal-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 36px;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin-bottom: 12px;
+}
+
+.modal-title em {
+  font-style: italic;
+  color: var(--mid-gray);
+}
+
+.modal-sub {
+  font-size: 15px;
+  font-weight: 300;
+  color: var(--mid-gray);
+  margin-bottom: 36px;
+  line-height: 1.65;
+}
+
+/* แถบระบุขั้นตอนย่อยด้านในโมดอล step pills */
+.modal-steps {
+  display: flex;
+  gap: 0;
+  margin-bottom: 36px;
+  border-bottom: 1px solid var(--light-gray);
+}
+
+.modal-step {
+  flex: 1;
+  padding: 12px 0;
+  border-bottom: 2px solid transparent;
+  transition: border-color 0.2s;
+}
+
+.modal-step.active {
+  border-bottom-color: var(--black);
+}
+
+.modal-step-num {
+  font-size: 10px;
+  color: var(--mid-gray);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 3px;
+}
+
+.modal-step-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--dark-gray);
+}
+
+.modal-step.active .modal-step-num,
+.modal-step.active .modal-step-label {
+  color: var(--black);
+}
+
+/* แผง UI กล่องควบคุมจำลอง ui preview block */
+.modal-ui {
+  background: var(--off-white);
+  border: 1px solid var(--light-gray);
+  border-radius: 14px;
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.modal-ui-label {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--mid-gray);
+  margin-bottom: 16px;
+}
+
+/* การจัดวางกล่องเฟรมจำลองกล้อง camera mock */
+.camera-preview {
+  width: 100%;
+  aspect-ratio: 16/9;
+  background: #111;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 14px;
+  position: relative;
+  overflow: hidden;
+}
+
+.face-frame {
+  width: 110px;
+  height: 130px;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-radius: 55px/65px;
+  position: relative;
+  animation: fpulse 2s ease-in-out infinite;
+}
+
+.face-frame::before,
+.face-frame::after {
+  content: '';
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border-color: white;
+  border-style: solid;
+  opacity: 0.85;
+}
+
+.face-frame::before {
+  top: -2px; left: -2px;
+  border-width: 2px 0 0 2px;
+  border-radius: 4px 0 0 0;
+}
+
+.face-frame::after {
+  bottom: -2px; right: -2px;
+  border-width: 0 2px 2px 0;
+  border-radius: 0 0 4px 0;
+}
+
+@keyframes fpulse {
+  0%, 100% { opacity: 0.55 }
+  50% { opacity: 1 }
+}
+
+.emotion-chip {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: var(--radius-pill);
+  padding: 5px 16px;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.9);
+  white-space: nowrap;
+}
+
+/* แผงกล่องกรอกข้อความจำลอง mock-textarea */
+.mock-textarea {
+  width: 100%;
+  min-height: 90px;
+  padding: 14px 16px;
+  border: 1px solid var(--light-gray);
+  border-radius: 10px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--black);
+  background: var(--white);
+  resize: none;
+  outline: none;
+  line-height: 1.65;
+  transition: border-color 0.2s;
+}
+
+.mock-textarea:focus {
+  border-color: var(--black);
+}
+
+/* ตารางแสดงผลปุ่มเลือกอีโมจิภายในโมดอล emoji grid */
+.emoji-grid-mock {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.ebtn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 14px 6px;
+  border: 1px solid var(--light-gray);
+  border-radius: 12px;
+  cursor: pointer;
+  background: var(--white);
+  transition: border-color 0.2s, background 0.2s, transform 0.15s;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.ebtn:hover {
+  border-color: var(--black);
+  transform: translateY(-2px);
+}
+
+.ebtn.selected {
+  background: var(--black);
+  border-color: var(--black);
+  color: var(--white);
+}
+
+.ebtn.selected .ebtn-label {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.ebtn-em {
+  font-size: 26px;
+  line-height: 1;
+}
+
+.ebtn-label {
+  font-size: 11px;
+  color: var(--mid-gray);
+}
+
+/* การ์ดผลลัพธ์แสดงรายชื่อเพลงที่แนะนำ result card */
+.result-card {
+  background: var(--black);
+  border-radius: 12px;
+  padding: 18px 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.result-art {
+  width: 50px;
+  height: 50px;
+  border-radius: 8px;
+  background: var(--dark-gray);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+}
+
+.result-info {
+  flex: 1;
+}
+
+.result-song {
+  font-weight: 500;
+  color: var(--white);
+  font-size: 14px;
+}
+
+.result-artist {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.4);
+  margin-top: 2px;
+}
+
+.result-bar {
+  margin-top: 10px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 1px;
+  overflow: hidden;
+}
+
+.result-bar-fill {
+  height: 100%;
+  background: var(--white);
+  width: 0;
+  animation: barPlay 4s linear infinite;
+}
+
+@keyframes barPlay {
+  0% { width: 0 }
+  100% { width: 100% }
+}
+
+/* กล่องคำอธิบายผลลัพธ์อารมณ์ในโมดอล explain box */
+.explain-box {
+  background: var(--off-white);
+  border: 1px solid var(--light-gray);
+  border-radius: 12px;
+  padding: 18px 20px;
+  margin-top: 14px;
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--dark-gray);
+  line-height: 1.7;
+}
+
+/* ปุ่มสำหรับกดสั่งการหลักในโมดอล action btn */
+.modal-action {
+  width: 100%;
+  padding: 15px;
+  font-size: 15px;
+  font-weight: 500;
+  background: var(--black);
+  color: var(--white);
+  border: none;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  transition: transform 0.15s, box-shadow 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.modal-action:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(13, 12, 11, 0.16);
+}
+
+/* คลาสจัดการแอนิเมชันตอนเปิดเผยข้อมูลอีโมจิผลลัพธ์ */
+.fade-up-anim {
+  animation: fadeUp 0.4s ease;
+}
+
+/* ระบบจัดเรียงแบบยืดหยุ่นตามขนาดอุปกรณ์ Responsive */
+@media(max-width:768px) {
+  nav {
+    padding: 16px 24px;
+  }
+
+  .nav-links {
+    display: none;
+  }
+
+  section {
+    padding: 64px 24px;
+  }
+
+  .modes-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-box {
+    padding: 28px 20px;
+  }
+
+  footer {
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
+    padding: 32px 24px;
+  }
+
+  .main-title-large {
+    font-size: 2.75rem;
+  }
+}

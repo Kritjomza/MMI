@@ -100,7 +100,7 @@ export default function ResultPage() {
       </AnimatePresence>
 
       {/* Main Content */}
-      <div style={{ position: 'relative', zIndex: 10, maxWidth: 1100, margin: '0 auto', padding: '7rem 48px 5rem' }}>
+      <div style={{ position: 'relative', zIndex: 10, maxWidth: 1100, margin: '0 auto', padding: 'clamp(5rem, 10vw, 7rem) clamp(16px, 5vw, 48px) clamp(3rem, 6vw, 5rem)' }}>
 
         {/* Back */}
         <motion.button onClick={() => { if (audioRef.current) audioRef.current.pause(); router.push('/analyze'); }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: showReveal ? 2.2 : 0 }}
@@ -109,10 +109,10 @@ export default function ResultPage() {
         </motion.button>
 
         {/* Top Grid: Emotion + AI */}
-        <div style={{ display: 'grid', gridTemplateColumns: '340px 1fr', gap: 24, marginBottom: 64 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))', gap: 'clamp(16px, 3vw, 24px)', marginBottom: 'clamp(32px, 6vw, 64px)' }}>
           {/* Left: Dominant Emotion */}
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: showReveal ? 2.3 : 0.1 }}
-            style={{ background: s.white, border: `1px solid ${s.lightGray}`, borderRadius: 16, padding: 32, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            style={{ background: s.white, border: `1px solid ${s.lightGray}`, borderRadius: 16, padding: 'clamp(20px, 4vw, 32px)', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <div style={{ marginBottom: 8 }}>
               <EmotionOrb emotion={analysis.dominantEmotion} size={120} interactive />
             </div>
@@ -169,7 +169,7 @@ export default function ResultPage() {
 
           {/* Right: AI Analysis + Tags */}
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: showReveal ? 2.5 : 0.2 }}
-            style={{ background: s.white, border: `1px solid ${s.lightGray}`, borderRadius: 16, padding: 32, display: 'flex', flexDirection: 'column' }}>
+            style={{ background: s.white, border: `1px solid ${s.lightGray}`, borderRadius: 16, padding: 'clamp(20px, 4vw, 32px)', display: 'flex', flexDirection: 'column' }}>
             
             {/* AI Interpretation */}
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
@@ -220,7 +220,7 @@ export default function ResultPage() {
           </div>
 
           {/* Track Grid */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 12 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 260px), 1fr))', gap: 12 }}>
             {tracks.map((track, i) => {
               const isPlaying = playingId === track.id;
               return (
@@ -277,15 +277,15 @@ export default function ResultPage() {
 
         {/* Actions */}
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: showReveal ? 3.5 : 0.8 }}
-          style={{ display: 'flex', justifyContent: 'center', gap: 16, marginTop: 64 }}>
+          style={{ display: 'flex', justifyContent: 'center', gap: 'clamp(8px, 2vw, 16px)', marginTop: 'clamp(32px, 6vw, 64px)', flexWrap: 'wrap' }}>
           <button onClick={() => { if (audioRef.current) audioRef.current.pause(); router.push('/analyze'); }}
-            style={{ background: s.black, color: '#fff', border: 'none', borderRadius: 999, padding: '14px 32px', fontSize: 14, fontWeight: 500, cursor: 'pointer', fontFamily: s.font, display: 'flex', alignItems: 'center', gap: 8, transition: 'transform 0.15s, box-shadow 0.15s' }}
+            style={{ background: s.black, color: '#fff', border: 'none', borderRadius: 999, padding: 'clamp(10px, 2vw, 14px) clamp(20px, 4vw, 32px)', fontSize: 'clamp(12px, 2vw, 14px)', fontWeight: 500, cursor: 'pointer', fontFamily: s.font, display: 'flex', alignItems: 'center', gap: 8, transition: 'transform 0.15s, box-shadow 0.15s' }}
             onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 12px 28px rgba(13,12,11,0.18)'; }}
             onMouseLeave={e => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = ''; }}>
             <RefreshCw style={{ width: 16, height: 16 }} /> วิเคราะห์อีกครั้ง
           </button>
           <button onClick={() => { if (navigator.share) navigator.share({ title: 'Music Mood', text: `ฉันกำลังรู้สึก${domTH}! ลองมาวิเคราะห์อารมณ์กัน`, url: window.location.origin }); }}
-            style={{ background: 'transparent', color: s.black, border: `1px solid ${s.lightGray}`, borderRadius: 999, padding: '14px 32px', fontSize: 14, cursor: 'pointer', fontFamily: s.font, display: 'flex', alignItems: 'center', gap: 8, transition: 'border-color 0.2s' }}
+            style={{ background: 'transparent', color: s.black, border: `1px solid ${s.lightGray}`, borderRadius: 999, padding: 'clamp(10px, 2vw, 14px) clamp(20px, 4vw, 32px)', fontSize: 'clamp(12px, 2vw, 14px)', cursor: 'pointer', fontFamily: s.font, display: 'flex', alignItems: 'center', gap: 8, transition: 'border-color 0.2s' }}
             onMouseEnter={e => e.currentTarget.style.borderColor = s.black}
             onMouseLeave={e => e.currentTarget.style.borderColor = s.lightGray}>
             <Share2 style={{ width: 16, height: 16 }} /> แชร์ผลลัพธ์

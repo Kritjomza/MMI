@@ -94,7 +94,7 @@ function AnalyzeContent() {
       <Navbar />
 
       <div style={{ position: 'relative', zIndex: 10, paddingTop: '7rem', paddingBottom: '5rem' }}>
-        <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 48px' }}>
+        <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 clamp(16px, 5vw, 48px)' }}>
 
           {/* Header */}
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} style={{ textAlign: 'center', marginBottom: '2rem' }}>
@@ -110,8 +110,8 @@ function AnalyzeContent() {
           </motion.div>
 
           {/* Mode Selector */}
-          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} style={{ display: 'flex', justifyContent: 'center', marginBottom: '2.5rem' }}>
-            <div style={{ display: 'flex', background: s.white, border: `1px solid ${s.lightGray}`, borderRadius: 999, padding: 4, gap: 4 }}>
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} style={{ display: 'flex', justifyContent: 'center', marginBottom: '2.5rem', padding: '0 8px' }}>
+            <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', background: s.white, border: `1px solid ${s.lightGray}`, borderRadius: 999, padding: 4, gap: 4 }}>
               {[
                 { id: 'face', label: 'สแกนใบหน้า', icon: Camera },
                 { id: 'both', label: 'รวม', icon: ScanFace },
@@ -119,8 +119,8 @@ function AnalyzeContent() {
               ].map(mode => (
                 <button key={mode.id} onClick={() => setInputMode(mode.id as InputMode)}
                   style={{
-                    display: 'flex', alignItems: 'center', gap: 8, padding: '10px 24px', borderRadius: 999,
-                    fontSize: 13, fontWeight: 500, border: 'none', cursor: 'pointer', fontFamily: s.font,
+                    display: 'flex', alignItems: 'center', gap: 6, padding: 'clamp(6px, 1.5vw, 10px) clamp(12px, 3vw, 24px)', borderRadius: 999,
+                    fontSize: 'clamp(11px, 2vw, 13px)', fontWeight: 500, border: 'none', cursor: 'pointer', fontFamily: s.font,
                     background: inputMode === mode.id ? s.black : 'transparent',
                     color: inputMode === mode.id ? '#fff' : s.gray,
                     transition: 'all 0.2s',
@@ -154,11 +154,11 @@ function AnalyzeContent() {
           </motion.div>
 
           {/* Main Grid */}
-          <div style={{ display: 'grid', gridTemplateColumns: inputMode === 'both' ? '1fr 1fr' : '1fr', gap: 24, maxWidth: inputMode === 'both' ? 1100 : 700, margin: '0 auto' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: inputMode === 'both' ? 'repeat(auto-fit, minmax(min(100%, 340px), 1fr))' : '1fr', gap: 24, maxWidth: inputMode === 'both' ? 1100 : 700, margin: '0 auto' }}>
 
             {/* Camera Panel */}
             {(inputMode === 'both' || inputMode === 'face') && (
-              <div style={{ background: s.white, border: `1px solid ${s.lightGray}`, borderRadius: 16, padding: 32, overflow: 'hidden' }}>
+              <div style={{ background: s.white, border: `1px solid ${s.lightGray}`, borderRadius: 16, padding: 'clamp(16px, 3vw, 32px)', overflow: 'hidden' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 20 }}>
                   <Camera style={{ color: s.gray, width: 20, height: 20 }} />
                   <h2 style={{ fontFamily: s.serif, fontSize: 20 }}>สแกนใบหน้า</h2>
@@ -209,7 +209,7 @@ function AnalyzeContent() {
 
             {/* Journal Panel */}
             {(inputMode === 'both' || inputMode === 'journal') && (
-              <div style={{ background: s.white, border: `1px solid ${s.lightGray}`, borderRadius: 16, padding: 32, display: 'flex', flexDirection: 'column' }}>
+              <div style={{ background: s.white, border: `1px solid ${s.lightGray}`, borderRadius: 16, padding: 'clamp(16px, 3vw, 32px)', display: 'flex', flexDirection: 'column' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 20 }}>
                   <ScanFace style={{ color: s.gray, width: 20, height: 20 }} />
                   <h2 style={{ fontFamily: s.serif, fontSize: 20 }}>เขียนระบาย</h2>
@@ -246,7 +246,7 @@ function AnalyzeContent() {
             <button onClick={handleAnalyze} disabled={!canAnalyze || selectedLanguages.length === 0}
               style={{
                 background: s.black, color: '#fff', border: 'none', borderRadius: 999,
-                padding: '16px 48px', fontSize: 15, fontWeight: 500, cursor: canAnalyze ? 'pointer' : 'not-allowed',
+                padding: 'clamp(12px, 2vw, 16px) clamp(28px, 5vw, 48px)', fontSize: 'clamp(13px, 2vw, 15px)', fontWeight: 500, cursor: canAnalyze ? 'pointer' : 'not-allowed',
                 fontFamily: s.font, display: 'inline-flex', alignItems: 'center', gap: 10,
                 opacity: canAnalyze && selectedLanguages.length > 0 ? 1 : 0.4,
                 transition: 'transform 0.15s, box-shadow 0.15s, opacity 0.2s',

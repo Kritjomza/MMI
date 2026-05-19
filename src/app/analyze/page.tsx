@@ -5,15 +5,27 @@ import { useState, useRef, useCallback } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
 import {
-  Camera, CameraOff, Loader2, ScanFace, Eye, Globe, ArrowLeft, Sparkles
+  Camera, CameraOff, Loader2, ScanFace, Eye, Globe, ArrowLeft, Sparkles,
+  Smile, Sun, Zap, CloudRain, Leaf, Wind, Moon, Lightbulb
 } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import EmotionOrb from '@/components/EmotionOrb';
 import { useFaceEmotion } from '@/hooks/useFaceEmotion';
 import { analyzeTextEmotion, fuseEmotions } from '@/app/actions/gemini';
 import { getRecommendations } from '@/app/actions/deezer';
+import type { EmotionLabel } from '@/lib/types';
 
-type InputMode = 'both' | 'face' | 'journal';
+type InputMode = 'both' | 'face' | 'journal' | 'emoji';
+
+const moodIcons: { key: string; icon: any; label: string; emotion: EmotionLabel; textHint: string }[] = [
+  { key: 'happy', icon: Sun, label: 'มีความสุข', emotion: 'happy', textHint: 'ฉันรู้สึกมีความสุขมากวันนี้' },
+  { key: 'excited', icon: Zap, label: 'ตื่นเต้น', emotion: 'excited', textHint: 'ฉันรู้สึกตื่นเต้นและมีพลัง' },
+  { key: 'sad', icon: CloudRain, label: 'เศร้า', emotion: 'sad', textHint: 'ฉันรู้สึกเศร้าและหม่นหมอง' },
+  { key: 'calm', icon: Leaf, label: 'ผ่อนคลาย', emotion: 'calm', textHint: 'ฉันรู้สึกสงบและผ่อนคลาย' },
+  { key: 'stressed', icon: Wind, label: 'เครียด', emotion: 'fearful', textHint: 'ฉันรู้สึกเครียดและกังวลมาก' },
+  { key: 'tired', icon: Moon, label: 'เหนื่อยล้า', emotion: 'sad', textHint: 'ฉันเหนื่อยมาก หมดแรง' },
+  { key: 'confused', icon: Lightbulb, label: 'ลังเล', emotion: 'surprised', textHint: 'ฉันรู้สึกสับสนและไม่แน่ใจ' },
+];
 
 function AnalyzeContent() {
   const router = useRouter();
@@ -29,6 +41,7 @@ function AnalyzeContent() {
   const [inputMode, setInputMode] = useState<InputMode>(initialMode);
   const [selectedLanguages, setSelectedLanguages] = useState<string[]>(['Thai', 'English']);
   const [journalText, setJournalText] = useState('');
+  const [selectedEmoji, setSelectedEmoji] = useState<typeof moodIcons[number] | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [analysisStep, setAnalysisStep] = useState('');
 
@@ -51,6 +64,9 @@ function AnalyzeContent() {
       if ((inputMode === 'both' || inputMode === 'journal') && journalText.trim()) {
         setAnalysisStep('กำลังวิเคราะห์ข้อความ...');
         textResult = await analyzeTextEmotion(journalText, selectedLanguages);
+      } else if (inputMode === 'emoji' && selectedEmoji) {
+        setAnalysisStep('กำลังวิเคราะห์อารมณ์จากอีโมจิ...');
+        textResult = await analyzeTextEmotion(selectedEmoji.textHint, selectedLanguages);
       }
       if (!faceResult && !textResult) throw new Error('ไม่มีข้อมูลสำหรับวิเคราะห์');
 
@@ -68,13 +84,14 @@ function AnalyzeContent() {
       setIsAnalyzing(false);
       alert('เกิดข้อผิดพลาด กรุณาตรวจสอบข้อมูลแล้วลองใหม่');
     }
-  }, [journalText, isActive, faceDetected, getResult, router, inputMode, selectedLanguages]);
+  }, [journalText, isActive, faceDetected, getResult, router, inputMode, selectedLanguages, selectedEmoji]);
 
   const canAnalyze = (() => {
     if (isAnalyzing) return false;
     if (inputMode === 'both') return journalText.trim().length > 0 || (isActive && faceDetected);
     if (inputMode === 'face') return isActive && faceDetected;
     if (inputMode === 'journal') return journalText.trim().length > 0;
+    if (inputMode === 'emoji') return selectedEmoji !== null;
     return false;
   })();
 
@@ -116,6 +133,7 @@ function AnalyzeContent() {
                 { id: 'face', label: 'สแกนใบหน้า', icon: Camera },
                 { id: 'both', label: 'รวม', icon: ScanFace },
                 { id: 'journal', label: 'เขียนระบาย', icon: null },
+                { id: 'emoji', label: 'อีโมจิ', icon: Smile },
               ].map(mode => (
                 <button key={mode.id} onClick={() => setInputMode(mode.id as InputMode)}
                   style={{
@@ -239,6 +257,37 @@ function AnalyzeContent() {
                 <div style={{ fontSize: 11, color: s.gray, textAlign: 'right', marginTop: 8 }}>{journalText.length} / 500</div>
               </div>
             )}
+
+            {/* Emoji Panel */}
+            {inputMode === 'emoji' && (
+              <div style={{ background: s.white, border: `1px solid ${s.lightGray}`, borderRadius: 16, padding: 'clamp(16px, 3vw, 32px)', display: 'flex', flexDirection: 'column' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 20 }}>
+                  <Smile style={{ color: s.gray, width: 20, height: 20 }} />
+                  <h2 style={{ fontFamily: s.serif, fontSize: 20 }}>เลือกความรู้สึก</h2>
+                </div>
+
+                <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: 'clamp(4px, 1vw, 8px)' }}>
+                  {moodIcons.map(mood => (
+                    <button key={mood.key} onClick={() => setSelectedEmoji(mood)}
+                      style={{ 
+                        display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8, 
+                        padding: 'clamp(12px, 2vw, 20px) clamp(12px, 2vw, 24px)', 
+                        borderRadius: 12, cursor: 'pointer', transition: 'all 0.2s', border: 'none', 
+                        background: selectedEmoji?.key === mood.key ? s.black : '#fafaf8', 
+                        color: selectedEmoji?.key === mood.key ? '#fff' : s.black,
+                        fontFamily: s.font,
+                        boxShadow: selectedEmoji?.key === mood.key ? '0 4px 12px rgba(0,0,0,0.1)' : 'none'
+                      }}
+                      onMouseEnter={e => { if (selectedEmoji?.key !== mood.key) { e.currentTarget.style.background = s.lightGray; }}}
+                      onMouseLeave={e => { if (selectedEmoji?.key !== mood.key) { e.currentTarget.style.background = '#fafaf8'; }}}
+                    >
+                      <mood.icon style={{ width: 'clamp(24px, 4vw, 36px)', height: 'clamp(24px, 4vw, 36px)' }} strokeWidth={1.2} />
+                      <div style={{ fontSize: 'clamp(9px, 1.5vw, 11px)', letterSpacing: '0.06em', textTransform: 'uppercase' }}>{mood.label}</div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Analyze Button */}
@@ -258,7 +307,7 @@ function AnalyzeContent() {
             </button>
             {!canAnalyze && !isAnalyzing && (
               <p style={{ fontSize: 12, color: s.gray, marginTop: 16 }}>
-                {inputMode === 'face' ? 'เปิดกล้องเพื่อเริ่มต้น' : inputMode === 'journal' ? 'เขียนอะไรสักหน่อยเพื่อเริ่มต้น' : 'เขียนระบายหรือเปิดกล้องเพื่อเริ่มต้น'}
+                {inputMode === 'face' ? 'เปิดกล้องเพื่อเริ่มต้น' : inputMode === 'journal' ? 'เขียนอะไรสักหน่อยเพื่อเริ่มต้น' : inputMode === 'emoji' ? 'เลือกอีโมจิเพื่อเริ่มต้น' : 'เขียนระบายหรือเปิดกล้องเพื่อเริ่มต้น'}
               </p>
             )}
           </motion.div>
